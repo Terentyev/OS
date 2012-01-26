@@ -1,6 +1,8 @@
 #!/bin/bash
 
+INC=./inc
 nasm -f aout kernel_start.asm -o ks.o
-gcc -c kernel.c -o kernel.o -m32
-ld -m elf_i386 -T link.ld -o kernel.bin ks.o kernel.o
+gcc -Wextra -Wall -c kernel.c -o kernel.o -m32 -I${INC}
+gcc -Wextra -Wall -c system.c -o system.o -m32 -I${INC}
+ld -m elf_i386 -T link.ld -o kernel.bin ks.o kernel.o system.o
 rm *.o

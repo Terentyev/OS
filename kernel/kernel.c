@@ -1,3 +1,5 @@
+#include "system.h"
+
 #define WHITE_TXT 0x07 // white on black text
 
 void k_clear_screen();
@@ -5,10 +7,12 @@ unsigned int k_printf( char *message, unsigned int line );
 void update_cursor( int row, int col );
 
 
-k_main()
+int k_main()
 {
 	k_clear_screen();
 	k_printf( "Hello, world!", 0);
+	for ( ;; ) ;
+	return 0;
 }
 
 void k_clear_screen()
