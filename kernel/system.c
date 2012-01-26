@@ -33,3 +33,44 @@ void outportb( unsigned short _port, unsigned char _data )
 {
 	__asm__ __volatile__( "outb %1, %0" : : "dN" (_port), "a" (_data) );
 }
+
+char encodecolor( char bkg, char frg )
+{
+	return bkg << 4 | frg;
+}
+
+void clear_screen()
+{
+	char *vidmem = (char*) VIDEO_RAM_ADDRESS;
+	unsigned int i = 0;
+	char color = encodecolor(CLR_BLACK, CLR_LIGHT_GREY);
+
+	while ( i < CONSOLE_WIDTH * CONSOLE_HEIGHT * CONSOLE_DEPTH )
+	{
+		vidmem[i] = ' ';
+		++i;
+		vidmem[i] = color;
+		++i;
+	}
+}
+
+void print2screen( char *message, unsigned int row, unsigned int col, unsigned int color )
+{
+	char *vidmem = (char*) VIDEO_RAM_ADDRESS;
+	unsigned int i = (row * CONSOLE_WIDTH + col) * CONSOLE_DEPTH;
+
+	while ( i < CONSOLE_WIDTH * CONSOLE_HEIGHT * CONSOLE_DEPTH )
+	{
+		if ( *message == '\n' )
+		{
+			++row;
+			i = row * CONSOLE_WIDTH * CONSOLE_DEPTH;
+		}
+		else
+		{
+			vidmem[i++] = *message;
+			vidmem[i++] = color;
+		}
+		++message;
+	}
+}

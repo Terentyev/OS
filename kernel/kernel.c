@@ -1,56 +1,9 @@
 #include "system.h"
 
-#define WHITE_TXT 0x07 // white on black text
-
-void clear_screen();
-unsigned int printf( char *message, unsigned int line );
-void update_cursor( int row, int col );
-
-
 int main()
 {
 	clear_screen();
-	printf( "Hello, world!", 0);
+	print2screen( "Hello, world!", 0, 0, encodecolor(CLR_BLACK, CLR_WHITE) );
 	for ( ;; ) ;
 	return 0;
-}
-
-void clear_screen()
-{
-	char *vidmem = (char*) 0xb8000;
-	unsigned int i = 0;
-
-	while ( i < 80 * 25 * 2 )
-	{
-		vidmem[i] = ' ';
-		++i;
-		vidmem[i] = WHITE_TXT;
-		++i;
-	}
-}
-
-unsigned int printf( char *message, unsigned int line )
-{
-	char *vidmem = (char*) 0xb8000;
-	unsigned int i = line * 80 * 2;
-
-	while ( *message != 0 )
-	{
-		if ( *message == '\n' )
-		{
-			++line;
-			i = line * 80 * 2;
-			++message;
-		}
-		else
-		{
-			vidmem[i] = *message;
-			++message;
-			++i;
-			vidmem[i] = WHITE_TXT;
-			++i;
-		}
-	}
-
-	return 1;
 }
