@@ -4,22 +4,21 @@ void *memcpy( void *dst, const void *src, unsigned int count )
 {
 	unsigned char *d = (unsigned char*) dst;
 	unsigned char *s = (unsigned char*) src;
-	while ( count-- )
-		d[count] = s[count];
+	while ( count-- ) *d++ = *s++;
 	return dst;
 }
 
-unsigned char *memset( unsigned char *dst, unsigned char val, unsigned int count )
+void *memset( void *dst, unsigned char val, unsigned int count )
 {
-	while ( count-- )
-		dst[count] = val;
+	unsigned char *d = (unsigned char*) dst;
+	while ( count-- ) *d++ = val;
 	return dst;
 }
 
 unsigned int strlen( const unsigned char *str )
 {
 	unsigned int l = 0;
-	while ( str[l++] != '\0' ) ;
+	while ( *str++ != '\0' ) ++l;
 	return l;
 }
 
