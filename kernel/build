@@ -1,8 +1,9 @@
 #!/bin/bash
 
-INC=./inc
+INC="./inc"
+FLAGS="-fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -O"
 nasm -f aout kernel_start.asm -o ks.o
-gcc -Wextra -Wall -c kernel.c -o kernel.o -m32 -I${INC}
-gcc -Wextra -Wall -c system.c -o system.o -m32 -I${INC}
+gcc -Wextra -Wall -c kernel.c -o kernel.o -m32 -I${INC} ${FLAGS}
+gcc -Wextra -Wall -c system.c -o system.o -m32 -I${INC} ${FLAGS}
 ld -m elf_i386 -T link.ld -o kernel.bin ks.o kernel.o system.o
 rm *.o

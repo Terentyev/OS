@@ -1,7 +1,7 @@
 ; This is the kernel'- entry point
 [BITS 32]
 [global start]
-[extern k_main] ; this is in the c file
+[extern main] ; this is in the c file
 
 start:
     mov  esp, _sys_stack ; This points the stack to our new stack area
@@ -33,7 +33,7 @@ mboot:
     dd start
 
 stublet:
-    call k_main
+    call main
     cli                  ;  stop interrupts
     hlt                  ; halt the CPU
 

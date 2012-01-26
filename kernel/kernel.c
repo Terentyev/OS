@@ -2,20 +2,20 @@
 
 #define WHITE_TXT 0x07 // white on black text
 
-void k_clear_screen();
-unsigned int k_printf( char *message, unsigned int line );
+void clear_screen();
+unsigned int printf( char *message, unsigned int line );
 void update_cursor( int row, int col );
 
 
-int k_main()
+int main()
 {
-	k_clear_screen();
-	k_printf( "Hello, world!", 0);
+	clear_screen();
+	printf( "Hello, world!", 0);
 	for ( ;; ) ;
 	return 0;
 }
 
-void k_clear_screen()
+void clear_screen()
 {
 	char *vidmem = (char*) 0xb8000;
 	unsigned int i = 0;
@@ -29,7 +29,7 @@ void k_clear_screen()
 	}
 }
 
-unsigned int k_printf( char *message, unsigned int line )
+unsigned int printf( char *message, unsigned int line )
 {
 	char *vidmem = (char*) 0xb8000;
 	unsigned int i = line * 80 * 2;
