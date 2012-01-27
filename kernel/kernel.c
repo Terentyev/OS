@@ -2,8 +2,8 @@
 
 int main()
 {
-	clear_screen();
-	print2screen( "Hello, world!", 0, 0, encodecolor(CLR_BLACK, CLR_WHITE) );
+	init_video();
+	puts( "Hello, world!" );
 	for ( ;; ) ;
 	return 0;
 }
