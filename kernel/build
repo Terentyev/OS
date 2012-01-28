@@ -1,9 +1,22 @@
 #!/bin/bash
 
 INC="./inc"
-FLAGS="-fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -O"
-nasm -f aout kernel_start.asm -o ks.o
-gcc -Wextra -Wall -c kernel.c -o kernel.o -m32 -I${INC} ${FLAGS}
-gcc -Wextra -Wall -c system.c -o system.o -m32 -I${INC} ${FLAGS}
-ld -m elf_i386 -T link.ld -o kernel.bin ks.o kernel.o system.o
-rm *.o
+CFLAGS="-fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -O -Wextra -Wall -m32"
+LDFLAGS="-m elf_i386"
+NASMFLAGS="-f elf"
+LOG="build.log"
+
+rm ${LOG} &> /dev/null
+
+echo "Remove old kernel"
+rm kernel.bin &>> ${LOG}
+
+nasm ${NASMFLAGS} kernel_start.asm -o ks.o &>> ${LOG} && \
+    gcc ${CFLAGS} -c kernel.c -o kernel.o -I${INC} &>> ${LOG} && \
+    gcc ${CFLAGS} -c system.c -o system.o -I${INC} &>> ${LOG} && \
+    ld  ${LDFLAGS} -T link.ld -o kernel.bin ks.o kernel.o system.o &>> ${LOG} || \
+    echo "Failed build kernel" && exit 0
+
+echo "Remove object files"
+rm *.o &>> ${LOG}
+exit 1;
