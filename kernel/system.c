@@ -125,7 +125,7 @@ void putch( unsigned char ch )
 		default:
 			if ( ch >= CHAR_SPACE )
 			{
-				unsigned char *cur = &vidmem[(cur_y * CONSOLE_WIDTH + cur_x) * CONSOLE_WIDTH];
+				unsigned char *cur = &vidmem[(cur_y * CONSOLE_WIDTH + cur_x) * CONSOLE_DEPTH];
 				*cur = ch;
 				*++cur = attrib;
 				++cur_x;
@@ -145,6 +145,6 @@ void putch( unsigned char ch )
 
 void puts( const unsigned char *s )
 {
-	unsigned int i = strlen( s );
-	while ( i > 0 ) putch( s[--i] );
+	unsigned int i = 0, n = strlen( s );
+	while ( i < n ) putch( s[i++] );
 }
