@@ -1,0 +1,8 @@
+# See http://orgs.man.ac.uk/documentation/grub/grub_5.html#SEC25
+default 0
+timeout 5
+
+# My OS
+title OS
+root  (cd)
+kernel /boot/kernel.bin
