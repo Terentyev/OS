@@ -1,66 +1,66 @@
 #include "system.h"
 
-unsigned char *vidmem;
-unsigned char attrib;
-unsigned short cur_x, cur_y;
+uint8 *vidmem;
+uint8 attrib;
+uint16 cur_x, cur_y;
 
-void *memcpy( void *dst, const void *src, unsigned int count )
+void *memcpy( void *dst, const void *src, uint32 count )
 {
-	unsigned char *d = (unsigned char*) dst;
-	unsigned char *s = (unsigned char*) src;
+	uint8 *d = (uint8*) dst;
+	uint8 *s = (uint8*) src;
 	while ( count-- ) *d++ = *s++;
 	return dst;
 }
 
-void *memset( void *dst, unsigned char val, unsigned int count )
+void *memset( void *dst, uint8 val, uint32 count )
 {
-	unsigned char *d = (unsigned char*) dst;
+	uint8 *d = (uint8*) dst;
 	while ( count-- ) *d++ = val;
 	return dst;
 }
 
-void *memsetw( void *dst, unsigned short val, unsigned int count )
+void *memsetw( void *dst, uint16 val, uint32 count )
 {
-	unsigned short *d = (unsigned short*) dst;
+	uint16 *d = (uint16*) dst;
 	while ( count-- ) *d++ = val;
 	return dst;
 }
 
-unsigned int strlen( const unsigned char *str )
+uint32 strlen( const uint8 *str )
 {
-	unsigned int l = 0;
+	uint32 l = 0;
 	while ( *str++ != CHAR_NULL ) ++l;
 	return l;
 }
 
-unsigned char inportb( unsigned short _port )
+uint8 inportb( uint16 _port )
 {
-	unsigned char rv;
+	uint8 rv;
 	__asm__ __volatile__( "inb %1, %0" : "=a" (rv) : "dN" (_port) );
 	return rv;
 }
 
-void outportb( unsigned short _port, unsigned char _data )
+void outportb( uint16 _port, uint8 _data )
 {
 	__asm__ __volatile__( "outb %1, %0" : : "dN" (_port), "a" (_data) );
 }
 
-unsigned char encode_color( unsigned char bkg, unsigned char frg )
+uint8 encode_color( uint8 bkg, uint8 frg )
 {
 	return (bkg << 4) | frg;
 }
 
 void init_video()
 {
-	vidmem = (unsigned char*) VIDEO_RAM_ADDRESS;
+	vidmem = (uint8*) VIDEO_RAM_ADDRESS;
 	attrib = encode_color( CLR_BLACK, CLR_LIGHT_GREY );
 	clear_screen();
 }
 
 void clear_screen()
 {
-	unsigned int i = 0;
-	unsigned char tmp = attrib;
+	uint32 i = 0;
+	uint8 tmp = attrib;
 	attrib = encode_color(CLR_BLACK, CLR_LIGHT_GREY);
 
 	cur_x = 0;
@@ -79,11 +79,11 @@ void scroll()
 {
 	if ( cur_y < CONSOLE_HEIGHT ) return;
 
-	unsigned short tmp = cur_y - CONSOLE_HEIGHT + 1;
+	uint16 tmp = cur_y - CONSOLE_HEIGHT + 1;
 	memcpy( vidmem,
 		&vidmem[tmp * CONSOLE_WIDTH * CONSOLE_DEPTH],
 		CONSOLE_DEPTH * CONSOLE_WIDTH * ( CONSOLE_HEIGHT - tmp ) );
-	unsigned short blank = ((unsigned short)attrib << 8) | CHAR_SPACE;
+	uint16 blank = ((uint16)attrib << 8) | CHAR_SPACE;
 	memsetw( &vidmem[CONSOLE_WIDTH * ( CONSOLE_HEIGHT - tmp )], blank, CONSOLE_WIDTH );
 	cur_y = CONSOLE_HEIGHT - 1;
 }
@@ -105,7 +105,7 @@ void move_cursor()
 	outportb(0x3D5, tmp);
 }
 
-void putch( unsigned char ch )
+void putch( uint8 ch )
 {
 	switch ( ch )
 	{
@@ -125,7 +125,7 @@ void putch( unsigned char ch )
 		default:
 			if ( ch >= CHAR_SPACE )
 			{
-				unsigned char *cur = &vidmem[(cur_y * CONSOLE_WIDTH + cur_x) * CONSOLE_DEPTH];
+				uint8 *cur = &vidmem[(cur_y * CONSOLE_WIDTH + cur_x) * CONSOLE_DEPTH];
 				*cur = ch;
 				*++cur = attrib;
 				++cur_x;
@@ -143,8 +143,8 @@ void putch( unsigned char ch )
 	move_cursor();
 }
 
-void puts( const unsigned char *s )
+void puts( const uint8 *s )
 {
-	unsigned int i = 0, n = strlen( s );
+	uint32 i = 0, n = strlen( s );
 	while ( i < n ) putch( s[i++] );
 }

@@ -3,22 +3,30 @@
 #define __SYSTEM_H_INCLUDE
 
 /* SYSTEM.C */
+/* Types */
+typedef unsigned int   uint32;
+typedef          int   int32;
+typedef unsigned short uint16;
+typedef          short int16;
+typedef unsigned char  uint8;
+typedef          char  int8;
+
 /* System functions */
-extern void *memcpy( void *dst, const void *src, unsigned int count );
-extern void *memset( void *dst, unsigned char val, unsigned int count );
-extern void *memsetw( void *dst, unsigned short val, unsigned int count );
-extern unsigned int strlen( const unsigned char *str );
-extern unsigned char inportb( unsigned short _port );
-extern void outportb( unsigned short _port, unsigned char _data );
+extern void *memcpy( void *dst, const void *src, uint32 count );
+extern void *memset( void *dst, uint8 val, uint32 count );
+extern void *memsetw( void *dst, uint16 val, uint32 count );
+extern uint32 strlen( const uint8 *str );
+extern uint8 inportb( uint16 _port );
+extern void outportb( uint16 _port, uint8 _data );
 
 /* Output functions */
-extern unsigned char encode_color( unsigned char bkg, unsigned char frg );
+extern uint8 encode_color( uint8 bkg, uint8 frg );
 extern void init_video();
 extern void clear_screen();
 extern void scroll();
 extern void move_cursor();
-extern void putch( unsigned char ch );
-extern void puts( const unsigned char *s );
+extern void putch( uint8 ch );
+extern void puts( const uint8 *s );
 
 /* Constants */
 #define VIDEO_RAM_ADDRESS 0xB8000
