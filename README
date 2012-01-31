@@ -4,7 +4,7 @@ Prepare
 Needed packages for test:
     * app-cdr/cdrtools (3.00)
     * sys-boot/grub (0.97-r10)
-    * app-emulation/irtualbox (4.0.12)
+    * app-emulation/virtualbox (4.0.12)
 
 Create virtual machine
 ======================
