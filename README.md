@@ -6,7 +6,7 @@ Needed packages for test:
     * sys-boot/grub (0.97-r10)
     * app-emulation/virtualbox (4.0.12)
 
-If your distributive don`t have a cdrtools package, you can use
+If your distributive don't have a cdrtools package, you can use
 use genisoimage (1.1.11), but you should fix ./Makefile:
 
     replace
@@ -48,7 +48,7 @@ Build OS kernel:
 
     make
 
-Attack bootloading ISO-image
+Attach bootloading ISO-image
 ============================
 
 And attach:
