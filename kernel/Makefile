@@ -26,4 +26,4 @@ print:
 	echo $(ASMOBJ)
 
 clean:
-	rm *.o $(BIN)
+	rm -f *.o $(BIN)
